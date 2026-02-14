@@ -49,3 +49,9 @@ out
 .vs/
 .vscode
 .vscode/
+
+build
+build/
+
+dev-build/
+dev-build

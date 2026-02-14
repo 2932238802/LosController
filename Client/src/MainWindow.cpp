@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-
 /// <summary>
 /// 26_2_13
 /// - 初始化构造函数
@@ -12,6 +11,10 @@ MainWindow::MainWindow(QWidget* parent):
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
+
+	setWindowFlag(Qt::FramelessWindowHint);
+	initStyle();
+	initConnect();
 }
 
 
@@ -23,4 +26,37 @@ MainWindow::MainWindow(QWidget* parent):
 /// <param name="parent"></param>
 MainWindow::~MainWindow() {
 	delete ui;
+}
+
+
+
+
+/// <summary>
+/// 26_2_13
+/// - 初始化样式
+/// </summary>
+void MainWindow::initStyle()
+{
+	this->setStyleSheet(MainWindowStyle::style);
+}
+
+
+
+/// <summary>
+/// 26_2_13
+/// - 初始化连接
+/// </summary>
+void MainWindow::initConnect()
+{
+	connect(ui->btnMin, &QPushButton::clicked, this, &QWidget::showMinimized); 
+	connect(ui->btnClose, &QPushButton::clicked, this,&QWidget::close);
+	connect(ui->btnNavHome, &QPushButton::clicked, this, [=]() {
+		ui->stackedWidget->setCurrentIndex(0);
+		});
+	connect(ui->btnNavConnect, &QPushButton::clicked, this, [=]() {
+		ui->stackedWidget->setCurrentIndex(1);
+	});
+	connect(ui->btnNavSettings, &QPushButton::clicked, this, [=]() {
+		ui->stackedWidget->setCurrentIndex(2);
+		});
 }
