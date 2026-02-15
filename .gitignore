@@ -50,6 +50,8 @@ out
 .vscode
 .vscode/
 
+.cache
+
 build
 build/
 
