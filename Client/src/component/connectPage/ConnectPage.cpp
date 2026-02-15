@@ -1,5 +1,6 @@
 #include "ConnectPage.h"
 #include "ui_ConnectPage.h"
+#include <qpushbutton.h>
 
 
 namespace LosComponent {
@@ -35,7 +36,6 @@ namespace LosComponent {
 	/// </summary>
 	void ConnectPage::initConnect()
 	{
-
 	}
 
 

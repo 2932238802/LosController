@@ -50,13 +50,18 @@ void MainWindow::initConnect()
 {
 	connect(ui->btnMin, &QPushButton::clicked, this, &QWidget::showMinimized); 
 	connect(ui->btnClose, &QPushButton::clicked, this,&QWidget::close);
-	connect(ui->btnNavHome, &QPushButton::clicked, this, [=]() {
+	connect(ui->btnNavHome, &QPushButton::clicked, this, [this]() {
 		ui->stackedWidget->setCurrentIndex(0);
 		});
-	connect(ui->btnNavConnect, &QPushButton::clicked, this, [=]() {
+	connect(ui->btnNavConnect, &QPushButton::clicked, this, [this]() {
 		ui->stackedWidget->setCurrentIndex(1);
 	});
-	connect(ui->btnNavSettings, &QPushButton::clicked, this, [=]() {
+	connect(ui->btnNavSettings, &QPushButton::clicked, this, [this]() {
 		ui->stackedWidget->setCurrentIndex(2);
 		});
+	connect(ui->initPage, &LosComponent::InitPage::_connected_InitPage,this,[this](bool is_connected){
+		if(is_connected)
+			ui->stackedWidget->setCurrentIndex(1);	
+	}
+	);
 }

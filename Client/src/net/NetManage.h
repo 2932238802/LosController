@@ -1,11 +1,17 @@
 #pragma once
 #include <QObject>
+#include <QAbstractSocket>
 #include <QTcpSocket>
+#include <qstringview.h>
+#include "logger.h"
 #include "protocal.pb.h"
 
 namespace LosNet
 {
-
+/// <summary>
+/// 26_2_15
+/// - 单例模式 实现
+/// </summary>
 class NetManage : public QObject {
 	Q_OBJECT
 
@@ -27,7 +33,7 @@ private:
 	~NetManage();
 
 public slots:
-	void onErrorOccur();
+	void onErrorOccur(QAbstractSocket::SocketError error);
 	void onReadyRead();
 
 signals:
@@ -35,6 +41,7 @@ signals:
 
 private:
 	void initConnect();
+	void processData(const QByteArray& data);
 
 private:
 	QTcpSocket* LOS_tcp;

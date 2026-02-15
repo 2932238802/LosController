@@ -49,6 +49,8 @@ set(APP_SOURCES
 
     ../common/protocal.pb.h
     ../common/protocal.pb.cc
+    ../common/logger.h
+    ../common/logger.cpp
 
 )
 

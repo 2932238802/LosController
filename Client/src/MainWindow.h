@@ -5,6 +5,7 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include"MainWindow_style.h"
+#include"component/InitPage/InitPage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

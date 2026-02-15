@@ -3,6 +3,8 @@
 #include<QWidget>
 #include<QObject>
 #include"InitPage_style.h"
+#include"logger.h"
+#include"NetManage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,6 +27,13 @@ public:
 private:
 	void initConnect();
 	void initStyle();
+
+public slots:
+	void onConnectBtnClicked();
+	void onConnected(bool is_connect);
+
+signals:
+	void _connected_InitPage(bool is_connected);
 
 private:
 	Ui::InitPage* ui;
