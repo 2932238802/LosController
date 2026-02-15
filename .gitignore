@@ -39,3 +39,19 @@
 
 # debug information files
 *.dwo
+
+out/
+out
+
+.gitignore
+
+.vs
+.vs/
+.vscode
+.vscode/
+
+build
+build/
+
+dev-build/
+dev-build
