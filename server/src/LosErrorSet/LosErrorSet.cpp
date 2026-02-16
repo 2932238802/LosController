@@ -1,9 +1,7 @@
 
 
 #include "LosErrorSet.h"
-#include "logger.h"
-#include <X11/Xlib.h>
-#include <string>
+
 
 int LosXErrorHandler(Display* d , XErrorEvent* e)
 {

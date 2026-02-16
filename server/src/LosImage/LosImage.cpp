@@ -1,7 +1,6 @@
 
 #include "LosImage.h"
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
+
 
 /**
 26_2_15
@@ -117,7 +116,6 @@ void LosImage::release(){
         LOS_image = nullptr;
     }
 }
-
 
 
 

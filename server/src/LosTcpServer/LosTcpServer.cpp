@@ -4,7 +4,9 @@
 #include <asm-generic/socket.h>
 #include <cstdint>
 #include <netinet/in.h>
+#include <string>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 
@@ -70,29 +72,25 @@ bool LosTcpServer::accept_l(){
 }
 
 
+
+
 /**
-26_2_15
-- 发送数据
+
 */
-bool LosTcpServer::send_l(const std::vector<unsigned char>& data)
-{
-    if( -1 == LOS_clientFd) return false;
+bool LosTcpServer::send_l(const los_protocal::LosMessage& msg) {
+    if (LOS_clientFd == -1) return false;
 
-    uint32_t dataSize = static_cast<uint32_t>(data.size());
-    uint32_t netSize = htonl(dataSize);
+    std::string out;
+    if (!msg.SerializeToString(&out)) return false;
 
-    if(send(LOS_clientFd, &netSize,  sizeof(netSize), 0) <= 0)
-    {
-        return false;
-    }
+    uint32_t size = htonl(static_cast<uint32_t>(out.size()));
 
-    if(send(LOS_clientFd,data.data() , data.size(),0) <= 0)
-    {
-        return false;
-    }
+    if (sendAll(LOS_clientFd, &size, 4) < 0) return false;
+    if (sendAll(LOS_clientFd, out.data(), out.size()) < 0) return false;
 
     return true;
 }
+
 
 
 /**
@@ -106,3 +104,55 @@ void LosTcpServer::stop_l(){
     LOS_serverFd = -1;
     LOS_clientFd = -1;
 }
+
+
+
+
+/**
+26_2_16
+- 一次性 发送完毕的函数
+- -1 就是 大报错
+*/
+ssize_t LosTcpServer::sendAll(int fd , const void* buf ,size_t len){
+    ssize_t totalHasSend = 0;
+    const char* ptr = (const char*)(buf);
+
+    while(totalHasSend < len)
+    {
+        ssize_t size = send(fd,ptr+totalHasSend,len - totalHasSend ,0);
+
+        if(size < 0) return -1;
+        totalHasSend += size;
+    }
+    return totalHasSend;
+}
+
+
+
+
+/**
+26_2_15
+- 发送数据
+
+26_2_16
+- 弃用
+*/
+// bool LosTcpServer::send_l(const std::vector<unsigned char>& data)
+// {
+//     if( -1 == LOS_clientFd) return false;
+
+//     uint32_t dataSize = static_cast<uint32_t>(data.size());
+//     uint32_t netSize = htonl(dataSize);
+
+//     if(send(LOS_clientFd, &netSize,  sizeof(netSize), 0) <= 0)
+//     {
+//         return false;
+//     }
+
+//     if(send(LOS_clientFd,data.data() , data.size(),0) <= 0)
+//     {
+//         return false;
+//     }
+
+//     return true;
+// }
