@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package los_protocal;
+
+enum Msgtype {
+  IMAGE = 0;
+  MOUSE = 1;
+  KEYBOARD = 2;
+  HEARTBEAT = 3;
+}
+
+message LosMessage {
+    Msgtype type = 1;
+    uint32 sequence = 2;
+
+    oneof payload {
+      ImageFrame image_frame = 3;
+      MouseAction mouse_action = 4;
+      KeyboardAction keyboard_action = 5;
+      Heartbeat heartbeat = 6;
+    }
+}
+
+message ImageFrame {
+    uint32 width = 1;
+    uint32 height = 2;
+    bytes data = 3 ;
+    uint32 quality =4;
+}
+
+message MouseAction {
+  int32 x = 1;
+  int32 y = 2;
+  int32 button = 3;
+  int32 action = 4;
+}
+
+message KeyboardAction {
+    uint32 key_code = 1;
+    bool is_pressed = 2;
+}
+
+message Heartbeat {
+}
