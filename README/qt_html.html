@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Control - Geek Style</title>
+    <style>
+        /* 全局极客风格：黑白主调 + 等宽字体 + 硬朗线条 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Consolas", "Monaco", "Courier New", monospace; /* 极客等宽字体 */
+        }
+        body {
+            background-color: #121212; /* 深黑背景 */
+            color: #e0e0e0; /* 浅灰文字 */
+            line-height: 1.5;
+        }
+        .container {
+            width: 1280px;
+            height: 720px;
+            margin: 40px auto;
+            background-color: #1e1e1e; /* 主面板深灰 */
+            border: 1px solid #333; /* 硬朗边框 */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        /* Tab栏：终端风格标签页 */
+        .tab-header {
+            display: flex;
+            background-color: #121212;
+            border-bottom: 2px solid #333; /* 粗分割线 */
+        }
+        .tab-btn {
+            padding: 12px 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            color: #999;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            color: #00ff9d; /* 极客荧光绿强调 */
+            border-bottom: 2px solid #00ff9d;
+            margin-bottom: -2px;
+        }
+        .tab-btn:hover:not(.active) {
+            color: #fff;
+            background-color: #2a2a2a;
+        }
+
+        /* 界面内容区：端正布局 */
+        .tab-content {
+            height: calc(100% - 46px);
+            padding: 30px;
+            display: none;
+            overflow: auto;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 1. 初始未连接界面：终端表单风格 */
+        .init-interface {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+        .init-interface h2 {
+            font-size: 24px;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase; /* 大写字母增强极客感 */
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .connect-form {
+            width: 450px;
+            padding: 35px;
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+        }
+        .form-item {
+            margin-bottom: 25px;
+        }
+        .form-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .form-item input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #121212;
+            border: 1px solid #444;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s ease;
+        }
+        .form-item input:focus {
+            border-color: #00ff9d; /* 聚焦荧光绿边框 */
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background-color: #00ff9d;
+            color: #121212;
+            font-weight: bold;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #00e08b;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        }
+        .status-text {
+            font-size: 13px;
+            color: #ff6b6b; /* 红色状态提示 */
+            text-align: center;
+            border: 1px solid #442222;
+            background-color: #2a1a1a;
+            padding: 8px 20px;
+        }
+
+        /* 2. 连接后界面：分栏端正，终端控制区 */
+        .connected-interface {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 80% 20%;
+            gap: 30px;
+        }
+        /* 远程屏幕显示区 */
+        .screen-area {
+            background-color: #000;
+            border: 2px solid #333;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 16px;
+            position: relative;
+        }
+        .screen-placeholder::before {
+            content: "┌─────────────────────────────────────┐";
+            display: block;
+            margin-bottom: 10px;
+            color: #00ff9d;
+        }
+        .screen-placeholder::after {
+            content: "└─────────────────────────────────────┘";
+            display: block;
+            margin-top: 10px;
+            color: #00ff9d;
+        }
+        /* 控制侧边栏：分组硬朗 */
+        .control-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .control-group {
+            padding: 20px;
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+        }
+        .control-group h3 {
+            font-size: 14px;
+            margin-bottom: 18px;
+            color: #00ff9d;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            text-transform: uppercase;
+        }
+        .control-btn {
+            width: 100%;
+            margin-bottom: 12px;
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #444;
+        }
+        .control-btn:hover {
+            background-color: #333;
+            border-color: #00ff9d;
+            color: #00ff9d;
+        }
+        .control-btn.danger {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        .control-btn.danger:hover {
+            background-color: #2a1a1a;
+        }
+        .conn-info {
+            font-size: 12px;
+            color: #ccc;
+            line-height: 1.8;
+        }
+        .conn-info span {
+            color: #00ff9d;
+        }
+
+        /* 3. 设置界面：终端配置风格 */
+        .settings-interface {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 30px;
+        }
+        .settings-menu {
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+        }
+        .settings-menu-item {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #ccc;
+            transition: all 0.2s ease;
+        }
+        .settings-menu-item.active {
+            background-color: #121212;
+            color: #00ff9d;
+            border-left: 3px solid #00ff9d;
+        }
+        .settings-menu-item:hover:not(.active) {
+            background-color: #333;
+            color: #fff;
+        }
+        .settings-content {
+            padding: 25px;
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+        }
+        .settings-content h2 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+        .settings-form-item {
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .settings-form-item label {
+            width: 140px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .settings-form-item input, .settings-form-item select {
+            padding: 10px 15px;
+            background-color: #121212;
+            border: 1px solid #444;
+            color: #fff;
+            font-size: 14px;
+            flex: 1;
+            max-width: 320px;
+            outline: none;
+        }
+        .settings-form-item input:focus, .settings-form-item select:focus {
+            border-color: #00ff9d;
+        }
+        .settings-form-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            background-color: #121212;
+            border: 1px solid #444;
+            accent-color: #00ff9d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tab栏：极客风格标签 -->
+        <div class="tab-header">
+            <button class="tab-btn active" data-tab="init">INIT (DISCONNECTED)</button>
+            <button class="tab-btn" data-tab="connected">CONNECTED</button>
+            <button class="tab-btn" data-tab="settings">SETTINGS</button>
+        </div>
+
+        <!-- 1. 初始未连接界面 -->
+        <div class="tab-content active" id="init">
+            <div class="init-interface">
+                <h2>Remote Control Client v1.0</h2>
+                <div class="connect-form">
+                    <div class="form-item">
+                        <label for="remote-ip">REMOTE IP ADDRESS</label>
+                        <input type="text" id="remote-ip" placeholder="192.168.1.100" spellcheck="false">
+                    </div>
+                    <div class="form-item">
+                        <label for="remote-port">PORT</label>
+                        <input type="text" id="remote-port" placeholder="5900" value="5900" spellcheck="false">
+                    </div>
+                    <div class="form-item">
+                        <label for="remote-pwd">AUTH PASSWORD (OPTIONAL)</label>
+                        <input type="password" id="remote-pwd" placeholder="********" spellcheck="false">
+                    </div>
+                    <button class="btn btn-primary">CONNECT</button>
+                </div>
+                <div class="status-text">[STATUS] No remote device connected</div>
+            </div>
+        </div>
+
+        <!-- 2. 连接后界面 -->
+        <div class="tab-content" id="connected">
+            <div class="connected-interface">
+                <!-- 远程屏幕显示区 -->
+                <div class="screen-area">
+                    <div class="screen-placeholder">
+                        <p>Remote Screen Stream</p>
+                        <p style="font-size: 12px; margin-top: 10px; color: #666;">(Qt: QLabel/QWidget for frame render)</p>
+                    </div>
+                </div>
+                <!-- 控制侧边栏 -->
+                <div class="control-sidebar">
+                    <div class="control-group">
+                        <h3>Connection Info</h3>
+                        <div class="conn-info">
+                            <p>IP: <span>192.168.1.100</span></p>
+                            <p>PORT: <span>5900</span></p>
+                            <p>DURATION: <span>00:12:35</span></p>
+                            <p>LATENCY: <span>28ms</span></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <h3>Device Control</h3>
+                        <button class="btn control-btn">Ctrl+Alt+Del</button>
+                        <button class="btn control-btn">Fullscreen</button>
+                        <button class="btn control-btn">Quality</button>
+                        <button class="btn control-btn">Disable Input</button>
+                    </div>
+                    <div class="control-group">
+                        <h3>Connection</h3>
+                        <button class="btn control-btn danger">DISCONNECT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 设置界面 -->
+        <div class="tab-content" id="settings">
+            <div class="settings-interface">
+                <div class="settings-menu">
+                    <div class="settings-menu-item active">Basic</div>
+                    <div class="settings-menu-item">Display</div>
+                    <div class="settings-menu-item">Hotkeys</div>
+                    <div class="settings-menu-item">Security</div>
+                </div>
+                <div class="settings-content">
+                    <h2>Basic Settings</h2>
+                    <div class="settings-form-item">
+                        <label>Local Port</label>
+                        <input type="text" value="5900" spellcheck="false">
+                    </div>
+                    <div class="settings-form-item">
+                        <label>Reconnect Times</label>
+                        <select>
+                            <option>3 Times</option>
+                            <option>5 Times</option>
+                            <option>10 Times</option>
+                            <option>Unlimited</option>
+                        </select>
+                    </div>
+                    <div class="settings-form-item">
+                        <label>Timeout (s)</label>
+                        <input type="text" value="10" spellcheck="false">
+                    </div>
+                    <div class="settings-form-item">
+                        <label>Save History</label>
+                        <input type="checkbox" checked>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 20px;">SAVE CONFIG</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab切换逻辑
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // 设置菜单切换
+        const settingsMenuItems = document.querySelectorAll('.settings-menu-item');
+        settingsMenuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                settingsMenuItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

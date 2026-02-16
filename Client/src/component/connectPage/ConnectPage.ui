@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConnectPage</class>
+ <widget class="QWidget" name="ConnectPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="videoSurface">
+     <layout class="QVBoxLayout" name="videoLayout">
+      <item>
+       <widget class="QLabel" name="lblStreamPlaceholder">
+        <property name="text">
+         <string>REMOTE SCREEN STREAM</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="sidebar">
+     <layout class="QVBoxLayout" name="sidebarLayout">
+      <property name="spacing">
+       <number>20</number>
+      </property>
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="topMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="infoCard">
+        <property name="class" stdset="0">
+         <string>card</string>
+        </property>
+        <layout class="QVBoxLayout" name="infoLayout">
+         <item>
+          <widget class="QLabel" name="lblTitleInfo">
+           <property name="text">
+            <string>CONNECTION INFO</string>
+           </property>
+           <property name="class" stdset="0">
+            <string>card-title</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QFormLayout" name="formInfo">
+           <property name="horizontalSpacing">
+            <number>20</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>10</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lblIpKey">
+             <property name="text">
+              <string>IP:</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>info-key</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="lblIpVal">
+             <property name="text">
+              <string>192.168.1.100</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>info-value</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="lblPortKey">
+             <property name="text">
+              <string>PORT:</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>info-key</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="lblPortVal">
+             <property name="text">
+              <string>5900</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>info-value</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="lblDurKey">
+             <property name="text">
+              <string>DURATION:</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>info-key</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="lblDurVal">
+             <property name="text">
+              <string>00:12:35</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>info-value</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="controlCard">
+        <property name="class" stdset="0">
+         <string>card</string>
+        </property>
+        <layout class="QVBoxLayout" name="controlLayout">
+         <item>
+          <widget class="QLabel" name="lblTitleControl">
+           <property name="text">
+            <string>DEVICE CONTROL</string>
+           </property>
+           <property name="class" stdset="0">
+            <string>card-title</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="btnLayout">
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="btnCad">
+             <property name="text">
+              <string>Ctrl+Alt+Del</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>action-btn</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnFull">
+             <property name="text">
+              <string>Fullscreen</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>action-btn</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnQuality">
+             <property name="text">
+              <string>Quality</string>
+             </property>
+             <property name="class" stdset="0">
+              <string>action-btn</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnDisconnect">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>DISCONNECT</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
