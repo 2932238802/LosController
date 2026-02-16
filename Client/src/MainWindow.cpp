@@ -62,6 +62,7 @@ void MainWindow::initConnect()
 	connect(ui->initPage, &LosComponent::InitPage::_connected_InitPage,this,[this](bool is_connected){
 		if(is_connected)
 			ui->stackedWidget->setCurrentIndex(1);	
+		ui->btnNavConnect->setChecked(true);
 	}
 	);
 }

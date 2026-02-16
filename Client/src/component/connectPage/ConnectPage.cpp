@@ -1,4 +1,5 @@
 #include "ConnectPage.h"
+#include "NetManage.h"
 #include "ui_ConnectPage.h"
 #include <qpushbutton.h>
 
@@ -16,6 +17,7 @@ namespace LosComponent {
 	{
 		ui->setupUi(this);
 		initStyle();
+		initConnect();
 	}
 
 
@@ -36,6 +38,23 @@ namespace LosComponent {
 	/// </summary>
 	void ConnectPage::initConnect()
 	{
+		connect(&LosNet::NetManage::instance(),
+			&LosNet::NetManage::_imageFromLinux,
+			this,
+			&ConnectPage::onImageReceived	
+		);
+
+	}
+
+
+	/**
+	26_2_16
+	- 接受到 图片数据
+	*/
+	void ConnectPage::onImageReceived(const QPixmap &pixmap){
+		ui->lblStreamPlaceholder->setPixmap(pixmap.scaled(ui->lblStreamPlaceholder->size(), 
+                             Qt::KeepAspectRatio, 
+                             Qt::SmoothTransformation));
 	}
 
 

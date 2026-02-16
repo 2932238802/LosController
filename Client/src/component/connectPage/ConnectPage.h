@@ -3,6 +3,7 @@
 
 #include<QWidget>
 #include<QObject>
+#include <qtmetamacros.h>
 #include"ConnectPage_style.h"
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +28,10 @@ namespace LosComponent{
 	private:
 		void initConnect();
 		void initStyle();
+		
+	private slots:
+		void onImageReceived(const QPixmap &pixmap);
+
 
 	private:
 		Ui::ConnectPage* ui;

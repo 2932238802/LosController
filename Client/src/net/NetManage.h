@@ -2,6 +2,7 @@
 #include <QObject>
 #include <QAbstractSocket>
 #include <QTcpSocket>
+#include <qpixmap.h>
 #include <qstringview.h>
 #include "logger.h"
 #include "protocal.pb.h"
@@ -38,7 +39,7 @@ public slots:
 
 signals:
 	void _connected(bool is_connected);
-
+	void _imageFromLinux(const QPixmap& pix);
 private:
 	void initConnect();
 	void processData(const QByteArray& data);
